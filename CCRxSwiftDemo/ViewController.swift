@@ -35,8 +35,40 @@ class ViewController: UIViewController {
     @IBOutlet weak var button: UIButton!
     
     func test() {
-        button.rx.tap.
+        NotificationCenter.default.rx
+            .notification(UIScene.willEnterForegroundNotification)
+            .subscribe { (notification) in
+                print("Application Will Enter Foreground")
+            }
+//            onError: { (<#Error#>) in
+//                <#code#>
+//            } onCompleted: {
+//                <#code#>
+//            } onDisposed: {
+//                <#code#>
+//            }
+
         
+    }
+    
+    func test12() {
+        button.rx.tap.subscribe(onNext: {
+            print("button Tapped")
+        })
+//        .disposed(by: DisposeBag())
+    }
+    
+    func test11() {
+        button.rx.tap.subscribe(onNext: {
+            print("button Tapped")
+        })
+//        .dispose()
+    }
+    
+    func test10() {
+        button.rx.tap.subscribe { (e) in
+            print(e)
+        }
     }
     
     func test9() {
