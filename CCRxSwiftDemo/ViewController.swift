@@ -7,13 +7,115 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
+
+//extension ObservableType {
+////    func myMap<R>(transform: @escaping (E) -> R) -> Observable<R> {
+//    func myMap<R>(transform: @escaping (E) -> R) -> Observable<R> {
+//        return Observable.create { observer in
+//            let subscription = self.subscribe { e in
+//                    switch e {
+//                    case .next(let value):
+//                        let result = transform(value)
+//                        observer.on(.next(result))
+//                    case .error(let error):
+//                        observer.on(.error(error))
+//                    case .completed:
+//                        observer.on(.completed)
+//                    }
+//                }
+//
+//            return subscription
+//        }
+//    }
+//}
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var button: UIButton!
     
     func test() {
+        button.rx.tap.
         
+    }
+    
+    func test9() {
+        let subscription = myInterval(.milliseconds(100))
+            .debug("my probe")
+            .map { e in
+                return "This is simply \(e)"
+            }
+            .subscribe(onNext: { n in
+                print(n)
+            })
+
+//        Thread.sleep(forTimeInterval: 0.5)
+        Thread.sleep(forTimeInterval: 1.5)
+
+        subscription.dispose()
+    }
+    
+    func test8() {
+//        extension ObservableType {
+//            func myMap<R>(transform: @escaping (E) -> R) -> Observable<R> {
+//                return Observable.create { observer in
+//                    let subscription = self.subscribe { e in
+//                            switch e {
+//                            case .next(let value):
+//                                let result = transform(value)
+//                                observer.on(.next(result))
+//                            case .error(let error):
+//                                observer.on(.error(error))
+//                            case .completed:
+//                                observer.on(.completed)
+//                            }
+//                        }
+//
+//                    return subscription
+//                }
+//            }
+//        }
+        
+//        let subscription = myInterval(.milliseconds(100))
+//            .myMap { e in
+//                return "This is simply \(e)"
+//            }
+//            .subscribe(onNext: { n in
+//                print(n)
+//            })
+        
+//        let subscription = myInterval(.milliseconds(100))
+//            .myMap { e in
+//                return "This is simply \(e)"
+//            }
+//            .subscribe(onNext: { n in
+//                print(n)
+//            })
+        
+    }
+    
+    func test7() {
+        let counter = myInterval(.milliseconds(100))
+            .share(replay: 1)
+        
+        print("Started ----")
+        let subscription1 = counter.subscribe { (n) in
+            print("First \(n)")
+        }
+        
+        let subscription2 = counter.subscribe { (n) in
+            print("Second \(n)")
+        }
+        
+        Thread.sleep(forTimeInterval: 0.5)
+
+        subscription1.dispose()
+
+        Thread.sleep(forTimeInterval: 0.5)
+
+        subscription2.dispose()
+
+        print("Ended ----")
     }
     
     func myInterval(_ interval: DispatchTimeInterval) -> Observable<Int> {
